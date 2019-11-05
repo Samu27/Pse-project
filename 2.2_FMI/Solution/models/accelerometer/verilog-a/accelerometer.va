@@ -1,0 +1,74 @@
+// Copyright (c) 2007-2013, Coventor, Inc. All rights reserved.
+//
+// Verilog-A model automatically generated on: Thu Oct 31 14:55:53 2013
+//           with: MEMS+ 4.0.0, Revision: 75098 (2013-09-15_12:05:34)
+//
+// Useful scale factors:
+//
+// M25_x : 1e+006 V = 1 m
+// M25_y : 1e+006 V = 1 m
+// M25_z : 1e+006 V = 1 m
+// M25_rx : 100 V = 1 rad
+// M25_ry : 100 V = 1 rad
+// M25_rz : 100 V = 1 rad
+// Sensing_Negative_X : 1 V = 1 V
+// Sensing_Negative_Y : 1 V = 1 V
+// Sensing_Positive_X : 1 V = 1 V
+// Sensing_Positive_Y : 1 V = 1 V
+// tax : 0.001 V = 1 m/s^2
+// tay : 0.001 V = 1 m/s^2
+// taz : 0.001 V = 1 m/s^2
+// avx : 0.0001 V = 1 rad/s
+// avy : 0.0001 V = 1 rad/s
+// avz : 0.0001 V = 1 rad/s
+//
+// Outputs scale factors:
+//
+// Cap1 : 1 V = 1 F
+// Cap2 : 1 V = 1 F
+// Cap5 : 1 V = 1 F
+// Cap7 : 1 V = 1 F
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module accelerometer(avz, avy, avx, Cap7, Cap5, Cap2, Cap1);
+	input		avx, avy, avz;
+	electrical	avx, avy, avz;
+
+	output		Cap7, Cap5, Cap2, Cap1;
+	electrical	Cap7, Cap5, Cap2, Cap1;
+
+	electrical reduced_0, reduced_1, reduced_0_dot, reduced_1_dot;
+	electrical avx_dot, avy_dot, avz_dot;
+
+	analog begin
+		I(reduced_0) <+ +4.3386406161161100e-007 * V(reduced_0)
+					    -1.3362914788683635e-011 * V(reduced_1)
+						+8.1971135782205929e-008 * V(avx_dot)
+						+4.7338281503160476e-005 * V(avy_dot)
+						-1.1733090123189718e-009 * V(avz_dot)
+						+2.7408926928492613e-010 * ddt(V(reduced_0_dot))
+						-8.4418873811442846e-015 * ddt(V(reduced_1_dot));
+
+		I(reduced_1) <+ -1.3362914790397199e-011 * V(reduced_0)
+						+4.2621533604280236e-007 * V(reduced_1)
+						+4.6919152813032799e-005 * V(avx_dot)
+						-8.2703383603668942e-008 * V(avy_dot)
+						-6.7158458483200578e-007 * V(avz_dot)
+						-8.4418873811444093e-015 * ddt(V(reduced_0_dot))
+						+2.6925726362775216e-010 * ddt(V(reduced_1_dot));
+
+		I(reduced_0_dot) <+ - 9.9999999999999995e-007 * V(reduced_0_dot) + 9.9999999999999998e-013 * ddt(V(reduced_0));
+		I(reduced_1_dot) <+ - 9.9999999999999995e-007 * V(reduced_1_dot) + 9.9999999999999998e-013 * ddt(V(reduced_1));
+
+		I(avx_dot) <+ - 9.9999999999999995e-007 * V(avx_dot) + 9.9999999999999978e-013 * ddt(V(avx));
+		I(avy_dot) <+ - 9.9999999999999995e-007 * V(avy_dot) + 9.9999999999999978e-013 * ddt(V(avy));
+		I(avz_dot) <+ - 9.9999999999999995e-007 * V(avz_dot) + 9.9999999999999978e-013 * ddt(V(avz));
+
+		V(Cap1)    <+ + 2.1464290078088002e-015*V(reduced_0) + 6.0219091054599765e-014* V(reduced_1) - 3.2069853997816435e-013;
+		V(Cap2)    <+ - 6.0757091393743220e-014*V(reduced_0) + 2.1292867466878146e-015* V(reduced_1) - 3.2069853997816445e-013;
+		V(Cap5)    <+ - 2.1464209737829412e-015*V(reduced_0) - 6.0219925678977506e-014* V(reduced_1) + 3.2069853997816435e-013;
+		V(Cap7)    <+ + 6.0757933433813782e-014*V(reduced_0) - 2.1292976225758976e-015* V(reduced_1) + 3.2069853997816445e-013;
+	end
+endmodule

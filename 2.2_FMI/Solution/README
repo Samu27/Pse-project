@@ -1,0 +1,66 @@
+------------------------------------
+README 
+------------------------------------
+
+Tutorial: Exploiting Automatic Abstraction and the FMI Standard to Build Cycle-Accurate Virtual Platforms from Heterogeneous IPs
+
+
+--------------------------
+FOLDERS STRUCTURE 
+--------------------------
+
+- models/
+    This folder contains all the models used in the tutorial. In models/<your_model>/golden_model/ you can find the starting models.
+	
+	- models/accelerometer/
+		Accelerometer model written in Verilog-A.
+
+	- models/memory/
+		Verilog model of a simple memory connected to m6502 CPU (Verilog). 
+	
+	- models/m6502/
+		Verilog model of Motorola 6502 CPU.
+ 
+	- models/gain/
+		Simple Gain Algorithm.
+
+
+- coordinator/
+    This folder contains the pyFMI coordinator and all the fmus used in this tutorial.
+	
+	- coordinator/roms/ 
+		Contains the compiled rom of the memory.
+
+	- coordinator/fmus/ 
+		Contains all the FMUs.
+
+- c_controller/
+	C software for the m6502.
+
+
+--------------------------
+FMUs GENERATION
+--------------------------
+
+1. Move in the top folder of the desired model. 
+	
+	cd tutorial_1/models/<model>/
+
+2. launch the Makefile 
+
+3. At the end of the make execution the FMU is generated (<model>.fmu)
+
+
+It also generates these folders:
+
+- hif/
+
+	Contains the intermediate HIF descriptions, for all the steps of the toolchain
+
+- cpp/
+	Contains the cpp code generated using HIFSuite
+
+- fmu/
+	Contains all the files of the fmu: the modelDescription.xml and the <model>.so 
+
+
